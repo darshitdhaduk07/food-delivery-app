@@ -24,23 +24,35 @@ public class MenuCategory extends MenuComponent{
     public List<MenuComponent> getComponents() {
         return components;
     }
-    public MenuComponent findItemById(int id)
-    {
-        for(MenuComponent menuComponent : components)
-        {
-            if(menuComponent instanceof MenuItem item)
-            {
-                if(item.getId() == id)
-                {
-                    return menuComponent;
-                }
+    public MenuComponent findById(int id) {
+
+        if (this.id == id)
+            return this;
+
+        for (MenuComponent comp : components) {
+
+            if (comp.getId() == id)
+                return comp;
+
+            if (comp instanceof MenuCategory cat) {
+                MenuComponent found = cat.findById(id);
+                if (found != null)
+                    return found;
             }
         }
+
         return null;
     }
+
     @Override
     public void display(int level) {
-        System.out.println("   ".repeat(level)+ name);
+
+        System.out.println(
+                "   ".repeat(level)
+                        + "[" + id + "] "
+                        + name
+        );
+
         for (MenuComponent component : components) {
             component.display(level + 1);
         }

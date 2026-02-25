@@ -8,6 +8,6 @@ public class NoDiscount extends DiscountStrategy{
 
     @Override
     public double applyDiscount(double amount) {
-        return 0;
+        return amount;
     }
 }

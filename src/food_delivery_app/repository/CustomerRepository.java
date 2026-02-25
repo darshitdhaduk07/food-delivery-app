@@ -13,7 +13,6 @@ public class CustomerRepository {
         customerMap = new HashMap<>();
     }
 
-    // Singleton
     public static CustomerRepository getInstance() {
         if (instance == null) {
             instance = new CustomerRepository();

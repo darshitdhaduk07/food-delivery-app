@@ -6,6 +6,11 @@ public class CartItem {
     private MenuItem cartItem;
     private int quantity;
 
+    public CartItem(MenuItem item, int quantity) {
+        this.cartItem = item;
+        this.quantity = quantity;
+    }
+
     public MenuItem getItem() {
         return cartItem;
     }
@@ -18,14 +23,10 @@ public class CartItem {
         return quantity;
     }
 
-    public void increaseQuantity(int quantity) {
-        this.quantity += quantity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
-    public void decreaseQuantity(int quantity)
-    {
-        this.quantity -= quantity;
-    }
     public double getTotalPrice() {
         return cartItem.getPrice() * quantity;
     }

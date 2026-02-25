@@ -17,7 +17,7 @@ public class Customer extends User{
         this.addresses = new ArrayList<>();
 
         this.notifications = new ArrayList<>();
-//        this.cart = new Cart(this);
+        this.cart = new Cart();
     }
 
     public List<Address> getAddresses() {

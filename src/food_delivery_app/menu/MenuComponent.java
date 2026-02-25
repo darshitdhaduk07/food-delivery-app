@@ -1,11 +1,19 @@
 package food_delivery_app.menu;
 
 abstract public class MenuComponent {
-    String name;
 
-    public MenuComponent(String name)
-    {
+    protected String name;
+    protected int id;
+
+    private static int counter = 0;
+
+    public MenuComponent(String name) {
         this.name = name;
+        this.id = ++counter;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {
@@ -19,6 +27,6 @@ abstract public class MenuComponent {
     public void remove(MenuComponent component) {
         throw new UnsupportedOperationException();
     }
-    public abstract void display(int level);
 
+    public abstract void display(int level);
 }

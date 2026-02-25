@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cart {
-    private List<CartItem> Cartitems;
+    private List<CartItem> cartItems;
 
     public Cart() {
-        this.Cartitems = new ArrayList<>();
+        this.cartItems = new ArrayList<>();
     }
 
     public void addCartItem(CartItem item) {
-        Cartitems.add(item);
+        cartItems.add(item);
     }
 
     public CartItem getCartItemById(int id) {
-        for (CartItem item : Cartitems) {
+        for (CartItem item : cartItems) {
             if (item.getItem().getId() == id)
                 return item;
         }
@@ -24,19 +24,19 @@ public class Cart {
     }
 
     public void removeItemById(int id) {
-        Cartitems.removeIf(cartItem ->
+        cartItems.removeIf(cartItem ->
                 cartItem.getItem().getId() == id
         );
     }
 
     public void displayCart() {
 
-        if (Cartitems.isEmpty()) {
+        if (cartItems.isEmpty()) {
             System.out.println("Cart is empty.");
             return;
         }
 
-        for (CartItem ci : Cartitems) {
+        for (CartItem ci : cartItems) {
             System.out.println(
                     "Id :" + ci.getItem().getId() +
                             "Name :" + ci.getItem().getName() +
@@ -47,29 +47,20 @@ public class Cart {
     }
 
     public void clearCart() {
-        Cartitems.clear();
+        cartItems.clear();
     }
 
-    public void increaseQuantity(int id, int quantity) {
+    public void updateQuantity(int id, int quantity) {
         CartItem item = getCartItemById(id);
 
         if (item != null) {
-            item.increaseQuantity(quantity);
-            return;
-        }
-
-        System.out.println("Item not found in cart.");
-
-    }
-
-    public void decreaseQuantity(int id, int quantity) {
-        CartItem item = getCartItemById(id);
-
-        if (item != null) {
-            item.decreaseQuantity(quantity);
+            item.setQuantity(quantity);
             return;
         }
         System.out.println("Item not found in cart.");
 
+    }
+    public List<CartItem> getItems() {
+        return cartItems;
     }
 }
