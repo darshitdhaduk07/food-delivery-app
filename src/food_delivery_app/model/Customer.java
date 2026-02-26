@@ -27,9 +27,40 @@ public class Customer extends User{
     public void setAddresses(List<Address> addresses) {
         this.addresses = addresses;
     }
+    public Address getAddressById(int id) {
 
+        // user sees addresses starting from 1
+        int index = id - 1;
+
+        if (index < 0 || index >= addresses.size()) {
+            System.out.println("Invalid address ID.");
+            return null;
+        }
+
+        return addresses.get(index);
+    }
+    public void showAllAddresses() {
+
+        if (addresses.isEmpty()) {
+            System.out.println("No addresses found.");
+            return;
+        }
+
+        System.out.println("Your Addresses:");
+
+        int index = 1;
+
+        for (Address address : addresses) {
+            System.out.println(index + ". " + address.getAddress());
+            index++;
+        }
+    }
     public Cart getCart() {
         return cart;
+    }
+    public boolean isCartEmpty()
+    {
+        return cart.getItems().isEmpty();
     }
 
     public void setCart(Cart cart) {
@@ -44,6 +75,8 @@ public class Customer extends User{
         this.notifications = notifications;
     }
 
+
+
     @Override
     public String toString() {
         return "Customer{" +
@@ -51,8 +84,6 @@ public class Customer extends User{
                 ", name='" + getName() + '\'' +
                 ", email='" + getEmail() + '\'' +
                 ", addresses=" + addresses +
-                ", cart=" + cart +
-                ", notifications=" + notifications +
                 '}';
     }
 }

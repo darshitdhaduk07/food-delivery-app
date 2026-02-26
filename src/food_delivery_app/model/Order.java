@@ -12,7 +12,7 @@ public class Order {
     private Customer customer;
     private List<OrderItem> items;
     private double totalAmount;
-    private OrderStatus status;
+    private IOrderStatus status;
     private Address deliveryAddress;
     private DeliveryBoy deliveryBoy;
 
@@ -21,15 +21,13 @@ public class Order {
         this.customer = customer;
         this.items = new ArrayList<>(items);
         this.deliveryAddress = deliveryAddress;
-        this.status = OrderStatus.CREATED;
+        this.status = IOrderStatus.CREATED;
 
         calculateTotal();
     }
 
     private void calculateTotal() {
-        this.totalAmount = items.stream()
-                .mapToDouble(OrderItem::getTotalPrice)
-                .sum();
+        this.totalAmount = items.stream().mapToDouble(OrderItem::getTotalPrice).sum();
     }
 
     public int getId() {
@@ -48,11 +46,11 @@ public class Order {
         return totalAmount;
     }
 
-    public OrderStatus getStatus() {
+    public IOrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(IOrderStatus status) {
         this.status = status;
     }
 
@@ -70,11 +68,9 @@ public class Order {
 
     @Override
     public String toString() {
-        return "Order{" +
-                "id='" + id + '\'' +
-                ", customer=" + customer.getName() +
-                ", totalAmount=" + totalAmount +
-                ", status=" + status +
-                '}';
+
+        return String.format("| %-3d | %-14s | %-20s | ₹%-9.2f |",
+                id, customer.getName(), status, totalAmount
+        );
     }
 }

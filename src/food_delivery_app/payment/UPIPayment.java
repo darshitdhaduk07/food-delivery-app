@@ -1,6 +1,6 @@
 package food_delivery_app.payment;
 
-public class UPIPayment implements PaymentStrategy{
+public class UPIPayment implements IPaymentStrategy {
     private String upiId;
 
     public UPIPayment(String upiId) {

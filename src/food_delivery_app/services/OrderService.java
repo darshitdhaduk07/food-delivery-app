@@ -13,6 +13,7 @@ public class OrderService {
     private final OrderRepository orderRepo;
     private final CartService cartService;
     private final DeliveryService deliveryService;
+    private final InvoiceService invoiceService = new InvoiceService();
 
     public OrderService() {
         this.orderRepo = OrderRepository.getInstance();
@@ -21,10 +22,7 @@ public class OrderService {
     }
 
     //place order
-    public Order placeOrder(Customer customer,
-                            Address deliveryAddress,
-                            PaymentContext paymentContext,
-                            DiscountStrategy discountStrategy) {
+    public Order placeOrder(Customer customer, Address deliveryAddress, PaymentContext paymentContext, DiscountStrategy discountStrategy) throws InterruptedException {
 
         Cart cart = customer.getCart();
 
@@ -35,8 +33,7 @@ public class OrderService {
         }
 
         //take order item
-        List<OrderItem> orderItems =
-                cartService.convertToOrderItems(cart);
+        List<OrderItem> orderItems = cartService.convertToOrderItems(cart);
 
         //create order
         Order order = new Order(customer, orderItems, deliveryAddress);
@@ -49,29 +46,40 @@ public class OrderService {
         }
 
         //payment
-        order.setStatus(OrderStatus.PAYMENT_PENDING);
+        order.setStatus(IOrderStatus.PAYMENT_PENDING);
+        System.out.println("Payment Processing ...");
+        Thread.sleep(2000);
 
-        boolean paymentSuccess =
-                paymentContext.executePayment(finalAmount);
+
+        boolean paymentSuccess = paymentContext.executePayment(finalAmount);
 
         if (!paymentSuccess) {
             System.out.println("Payment failed.");
             return null;
         }
-
+        else {
+            System.out.println("Success!");
+        }
         //confirm order
-        order.setStatus(OrderStatus.CONFIRMED);
+        order.setStatus(IOrderStatus.CONFIRMED);
+        System.out.println("Order placed successfully.");
 
         //save order
         orderRepo.addOrder(order);
 
         //assign delivey boy
+        Thread.sleep(2000);
         deliveryService.assignDeliveryBoy(order);
 
         //clear cart
         cartService.clearCart(cart);
 
-        System.out.println("Order placed successfully.");
+
+
+        //print invoice
+        System.out.println("Invoice generating... ");
+        Thread.sleep(2000);
+        invoiceService.generateInvoice(order, finalAmount);
 
         return order;
     }

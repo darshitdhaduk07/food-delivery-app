@@ -38,6 +38,7 @@ public class DeliveryBoy extends User{
         this.available = true;
     }
 
+
     @Override
     public String toString() {
         return "DeliveryBoy{" +

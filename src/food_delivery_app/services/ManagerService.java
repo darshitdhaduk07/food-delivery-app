@@ -6,8 +6,9 @@ import food_delivery_app.menu.MenuComponent;
 import food_delivery_app.menu.MenuItem;
 import food_delivery_app.menu.MenuStore;
 import food_delivery_app.model.DeliveryBoy;
+import food_delivery_app.model.Manager;
 import food_delivery_app.model.Order;
-import food_delivery_app.model.OrderStatus;
+import food_delivery_app.model.IOrderStatus;
 import food_delivery_app.repository.CustomerRepository;
 import food_delivery_app.repository.DeliveryRepository;
 import food_delivery_app.repository.OrderRepository;
@@ -20,7 +21,6 @@ public class ManagerService {
     private final CustomerRepository customerRepo;
     private final DeliveryRepository deliveryRepo;
     private DiscountStrategy discountStrategy;
-
     public ManagerService() {
         this.orderRepo = OrderRepository.getInstance();
         this.customerRepo = CustomerRepository.getInstance();
@@ -45,7 +45,7 @@ public class ManagerService {
                                   double price) {
 
         MenuComponent comp =
-                MenuStore.getMenu().findById(categoryId);
+                MenuStore.getMenu().findMenuComponentById(categoryId);
 
         if (comp instanceof MenuCategory category) {
 
@@ -59,7 +59,7 @@ public class ManagerService {
     public void updatePrice(int itemId, double newPrice) {
 
         MenuComponent comp =
-                MenuStore.getMenu().findById(itemId);
+                MenuStore.getMenu().findMenuComponentById(itemId);
 
         if (comp instanceof MenuItem item) {
 
@@ -74,7 +74,7 @@ public class ManagerService {
                                    boolean status) {
 
         MenuComponent comp =
-                MenuStore.getMenu().findById(itemId);
+                MenuStore.getMenu().findMenuComponentById(itemId);
 
         if (comp instanceof MenuItem item) {
 
@@ -124,7 +124,7 @@ public class ManagerService {
 
         for (Order order : orderRepo.findAll()) {
 
-            if (order.getStatus() == OrderStatus.DELIVERED) {
+            if (order.getStatus() == IOrderStatus.DELIVERED) {
                 total += order.getTotalAmount();
             }
         }

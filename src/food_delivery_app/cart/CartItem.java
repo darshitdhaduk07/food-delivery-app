@@ -31,4 +31,11 @@ public class CartItem {
         return cartItem.getPrice() * quantity;
     }
 
+    @Override
+    public String toString() {
+        return "CartItem{" +
+                "cartItem=" + cartItem +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

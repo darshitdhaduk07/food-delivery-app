@@ -24,7 +24,7 @@ public class MenuCategory extends MenuComponent{
     public List<MenuComponent> getComponents() {
         return components;
     }
-    public MenuComponent findById(int id) {
+    public MenuComponent findMenuComponentById(int id) {
 
         if (this.id == id)
             return this;
@@ -35,7 +35,7 @@ public class MenuCategory extends MenuComponent{
                 return comp;
 
             if (comp instanceof MenuCategory cat) {
-                MenuComponent found = cat.findById(id);
+                MenuComponent found = cat.findMenuComponentById(id);
                 if (found != null)
                     return found;
             }

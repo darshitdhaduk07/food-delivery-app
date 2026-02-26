@@ -1,9 +1,9 @@
 package food_delivery_app.payment;
 
 public class PaymentContext {
-    private PaymentStrategy paymentStrategy;
+    private IPaymentStrategy paymentStrategy;
 
-    public void setPaymentStrategy(PaymentStrategy paymentStrategy) {
+    public void setPaymentStrategy(IPaymentStrategy paymentStrategy) {
         this.paymentStrategy = paymentStrategy;
     }
 

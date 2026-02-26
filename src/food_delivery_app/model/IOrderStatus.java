@@ -1,6 +1,6 @@
 package food_delivery_app.model;
 
-public enum OrderStatus {
+public enum IOrderStatus {
     CREATED,
     PAYMENT_PENDING,
     CONFIRMED,

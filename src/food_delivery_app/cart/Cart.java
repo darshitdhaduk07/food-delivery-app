@@ -36,13 +36,16 @@ public class Cart {
             return;
         }
 
+        System.out.printf("%-5s %-15s %-10s %-10s%n",
+                "ID", "NAME", "QTY", "PRICE");
+        System.out.println("-------------------------------------------");
+
         for (CartItem ci : cartItems) {
-            System.out.println(
-                    "Id :" + ci.getItem().getId() +
-                            "Name :" + ci.getItem().getName() +
-                            "Quantity :" + ci.getQuantity() +
-                            "TotalPrice = ₹" + ci.getTotalPrice()
-            );
+            System.out.printf("%-5d %-15s %-10d ₹%-10.2f%n",
+                    ci.getItem().getId(),
+                    ci.getItem().getName(),
+                    ci.getQuantity(),
+                    ci.getTotalPrice());
         }
     }
 

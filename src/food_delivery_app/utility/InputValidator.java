@@ -7,6 +7,8 @@ public class InputValidator {
     private static Scanner scanner = new Scanner(System.in);
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+    private static final String UPI_REGEX =
+            "^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$";
     /**
      * Reads an integer from user input.
      * Keeps asking until a valid integer is entered.
@@ -134,6 +136,26 @@ public class InputValidator {
                 System.out.println("Invalid input! Please enter true or false.");
             }
         }
+    }
+    /**
+     * Reads valid UPI ID
+     */
+    public static String readUPI(String prompt) {
+
+        String upi;
+
+        while (true) {
+
+            System.out.print(prompt);
+            upi = scanner.nextLine().trim();
+
+            if (Pattern.matches(UPI_REGEX, upi))
+                break;
+
+            System.out.println("Invalid UPI ID format!");
+        }
+
+        return upi;
     }
 
 }

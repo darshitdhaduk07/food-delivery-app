@@ -16,7 +16,6 @@ public class CartService {
 
     public void addItem(Cart cart, MenuItem menuItem, int quantity) {
 
-
         if (!menuItem.isAvailable()) {
             System.out.println("Item not available.");
             return;
@@ -76,10 +75,7 @@ public class CartService {
         cart.clearCart();
     }
 
-    /* =========================
-       CONVERT TO ORDER ITEMS
-       VERY IMPORTANT
-       ========================= */
+
     public List<OrderItem> convertToOrderItems(Cart cart) {
 
         List<OrderItem> orderItems = new ArrayList<>();

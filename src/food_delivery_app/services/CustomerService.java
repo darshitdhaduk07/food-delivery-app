@@ -42,7 +42,10 @@ public class CustomerService {
         customer.getAddresses().add(address);
     }
 
-
+    //show all the address
+    public void showAddresses(Customer customer) {
+        customer.showAllAddresses();
+    }
     public List<Order> getOrderHistory(Customer customer) {
         return orderRepo.findByCustomerId(customer.getId());
     }
