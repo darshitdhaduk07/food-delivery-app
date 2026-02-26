@@ -79,11 +79,13 @@ public class Customer extends User{
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", name='" + getName() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", addresses=" + addresses +
-                '}';
+
+        return String.format(
+                "%-5d %-15s %-25s %-20s",
+                id,
+                getName(),
+                getEmail(),
+                addresses
+        );
     }
 }

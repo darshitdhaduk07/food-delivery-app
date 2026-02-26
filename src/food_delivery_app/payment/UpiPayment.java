@@ -1,10 +1,9 @@
 package food_delivery_app.payment;
 
-public class CashPayment implements PaymentStrategy {
-
+public class UpiPayment implements PaymentStrategy{
     @Override
     public boolean pay(double amount) {
-        System.out.println("Paid via Cash: ₹" + amount);
+        System.out.println("Paid via UPI: ₹" + amount);
         return true;
     }
 }

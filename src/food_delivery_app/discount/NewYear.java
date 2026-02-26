@@ -9,7 +9,7 @@ public class NewYear extends DiscountStrategy{
     @Override
     public double applyDiscount(double amount) {
         if(amount > 500)
-            return amount - (amount*discountPercentage/100);
-        return amount;
+            return (amount*discountPercentage/100);
+        return 0;
     }
 }

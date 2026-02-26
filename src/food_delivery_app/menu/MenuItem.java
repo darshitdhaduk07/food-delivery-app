@@ -28,14 +28,16 @@ public class MenuItem extends MenuComponent {
     }
 
     @Override
-    public void display(int level) {
+    public void displayTable() {
 
-        if (available) {
-            System.out.println(
-                    "   ".repeat(level)
-                            + "[" + id + "] "
-                            + name + " : ₹" + price
-            );
-        }
+        if (!available) return;
+
+        System.out.printf(
+                "%-5d %-12s %-18s ₹%-10.2f%n",
+                id,
+                "ITEM",
+                name,
+                price
+        );
     }
 }

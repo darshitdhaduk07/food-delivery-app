@@ -9,8 +9,8 @@ public class Divali extends DiscountStrategy{
     @Override
     public double applyDiscount(double amount) {
         if(amount > 500)
-            return amount - (amount*discountPercentage/100);
-        return amount;
+            return  amount*discountPercentage;
+        return 0;
     }
 }
 

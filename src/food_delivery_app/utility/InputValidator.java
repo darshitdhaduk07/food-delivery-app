@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 public class InputValidator {
     private static Scanner scanner = new Scanner(System.in);
     private static final String EMAIL_REGEX =
-            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+            "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
     private static final String UPI_REGEX =
             "^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$";
     /**
@@ -27,7 +27,27 @@ public class InputValidator {
         }
         return value;
     }
+    public static int readPassword(String prompt) {
 
+        while (true) {
+
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            // only digits allowed
+            if (input.matches("^[0-9]+$")) {
+
+                try {
+                    return Integer.parseInt(input);
+                } catch (NumberFormatException e) {
+                    System.out.println("Password too large.");
+                }
+
+            } else {
+                System.out.println("Password must contain only numbers (0-9).");
+            }
+        }
+    }
     /**
      * Reads an integer within a range [min, max]
      */
@@ -156,6 +176,21 @@ public class InputValidator {
         }
 
         return upi;
+    }
+    public static int readPositiveInt(String prompt) {
+
+        int value;
+
+        while (true) {
+
+            value = readInt(prompt);
+
+            if (value > 0) {
+                return value;
+            }
+
+            System.out.println("Enter a positive number (> 0).");
+        }
     }
 
 }

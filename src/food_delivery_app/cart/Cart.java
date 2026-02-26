@@ -19,7 +19,6 @@ public class Cart {
             if (item.getItem().getId() == id)
                 return item;
         }
-        System.out.println("Item not Found in Cart.");
         return null;
     }
 

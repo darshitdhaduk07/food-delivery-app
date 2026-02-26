@@ -28,5 +28,5 @@ abstract public class MenuComponent {
         throw new UnsupportedOperationException();
     }
 
-    public abstract void display(int level);
+    public abstract void displayTable();
 }

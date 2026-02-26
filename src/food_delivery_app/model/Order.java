@@ -14,7 +14,7 @@ public class Order {
     private double totalAmount;
     private IOrderStatus status;
     private Address deliveryAddress;
-    private DeliveryBoy deliveryBoy;
+    private DeliveryAgent deliveryAgent;
 
     public Order(Customer customer, List<OrderItem> items, Address deliveryAddress) {
         this.id = ++counter;
@@ -50,27 +50,41 @@ public class Order {
         return status;
     }
 
-    public void setStatus(IOrderStatus status) {
-        this.status = status;
+    public void moveToNextState() {
+        this.status = this.status.next();
+    }
+
+    public void setDeliveryAgent(DeliveryAgent agent) {
+        deliveryAgent = agent;
     }
 
     public Address getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public DeliveryBoy getDeliveryBoy() {
-        return deliveryBoy;
+    public DeliveryAgent getDeliveryBoy() {
+        return deliveryAgent;
     }
 
-    public void assignDeliveryBoy(DeliveryBoy deliveryBoy) {
-        this.deliveryBoy = deliveryBoy;
+    public void assignDeliveryBoy(DeliveryAgent deliveryAgent) {
+        this.deliveryAgent = deliveryAgent;
     }
 
     @Override
     public String toString() {
 
-        return String.format("| %-3d | %-14s | %-20s | ₹%-9.2f |",
-                id, customer.getName(), status, totalAmount
+        String deliveryName =
+                (deliveryAgent == null)
+                        ? "NOT_ASSIGNED"
+                        : deliveryAgent.getName();
+
+        return String.format(
+                "%-5d %-15s %-15s %-18s ₹%-10.2f",
+                id,
+                customer.getName(),
+                deliveryName,
+                status,
+                totalAmount
         );
     }
 }

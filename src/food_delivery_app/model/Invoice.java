@@ -8,13 +8,15 @@ public class Invoice {
 
     private int invoiceId;
     private Order order;
-    private double finalAmount;
+    private double grand;
     private LocalDateTime time;
+    private double discount;
 
-    public Invoice(Order order, double finalAmount) {
+    public Invoice(Order order, double grandTotal,double discount) {
         this.invoiceId = ++counter;
         this.order = order;
-        this.finalAmount = finalAmount;
+        this.grand = grandTotal;
+        this.discount = discount;
         this.time = LocalDateTime.now();
     }
 
@@ -42,10 +44,24 @@ public class Invoice {
 
         System.out.println("-----------------------------------------");
 
+
+
+        System.out.printf("%-20s %-10s ₹%-10.2f%n",
+                "SUBTOTAL",
+                "",
+                grand);
+
+        if (discount > 0) {
+            System.out.printf("%-20s %-10s ₹%-10.2f%n",
+                    "DISCOUNT",
+                    "",
+                    discount);
+        }
+
         System.out.printf("%-20s %-10s ₹%-10.2f%n",
                 "TOTAL",
                 "",
-                finalAmount);
+                grand-discount);
 
         System.out.println("=========================================\n");
     }

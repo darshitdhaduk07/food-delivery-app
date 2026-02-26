@@ -1,6 +1,7 @@
 package food_delivery_app.repository;
 
 
+import food_delivery_app.model.DeliveryAgent;
 import food_delivery_app.model.Order;
 
 import java.util.*;
@@ -9,9 +10,11 @@ public class OrderRepository {
 
     private static OrderRepository instance;
     private final Map<Integer, Order> orderMap;
+    private final Deque<Order> pendingOrders;
 
     private OrderRepository() {
         orderMap = new HashMap<>();
+        pendingOrders = new ArrayDeque<>();
     }
 
     public static OrderRepository getInstance() {
@@ -21,10 +24,21 @@ public class OrderRepository {
         return instance;
     }
 
-    public void addOrder(Order order) {
+    public void addOrderToHistory(Order order) {
         orderMap.put(order.getId(), order);
     }
-
+    public void addOrder(Order order)
+    {
+        pendingOrders.add(order);
+    }
+    public List<Order> getOrdersByDeliveryBoy(DeliveryAgent agent)
+    {
+        return orderMap.values().stream().filter((o)->o.getDeliveryBoy() == agent).toList();
+    }
+    public Order getPendingOrder()
+    {
+        return pendingOrders.pollFirst();
+    }
     public void removeOrder(int orderId) {
         orderMap.remove(orderId);
     }

@@ -1,19 +1,27 @@
 package food_delivery_app.menu;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class MenuCategory extends MenuComponent{
-    private List<MenuComponent> components;
-
+    LinkedHashMap<String, MenuComponent> components;
     public MenuCategory(String name) {
         super(name);
-        this.components = new ArrayList<>();
+        components = new LinkedHashMap<>();
     }
 
     @Override
     public void add(MenuComponent component) {
-        components.add(component);
+
+        String key =
+                component.getName().toLowerCase();
+
+        if (components.containsKey(key)) {
+            System.out.println("Duplicate not allowed.");
+            return;
+        }
+
+        components.put(key, component);
+        System.out.println("Item added");
     }
 
     @Override
@@ -22,14 +30,14 @@ public class MenuCategory extends MenuComponent{
     }
 
     public List<MenuComponent> getComponents() {
-        return components;
+        return components.values().stream().toList();
     }
     public MenuComponent findMenuComponentById(int id) {
 
         if (this.id == id)
             return this;
 
-        for (MenuComponent comp : components) {
+        for (MenuComponent comp : components.values()) {
 
             if (comp.getId() == id)
                 return comp;
@@ -45,16 +53,15 @@ public class MenuCategory extends MenuComponent{
     }
 
     @Override
-    public void display(int level) {
+    public void displayTable() {
 
-        System.out.println(
-                "   ".repeat(level)
-                        + "[" + id + "] "
-                        + name
-        );
+        System.out.println();
+        System.out.println("----------- [" + id + "] "
+                + name.toUpperCase()
+                + " -----------");
 
-        for (MenuComponent component : components) {
-            component.display(level + 1);
+        for (MenuComponent component : components.values()) {
+            component.displayTable();
         }
     }
 }

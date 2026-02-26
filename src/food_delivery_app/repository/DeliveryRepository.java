@@ -1,16 +1,18 @@
 package food_delivery_app.repository;
 
-import food_delivery_app.model.DeliveryBoy;
+import food_delivery_app.model.DeliveryAgent;
 
 import java.util.*;
 
 public class DeliveryRepository {
 
     private static DeliveryRepository instance;
-    private final Map<Integer, DeliveryBoy> deliveryMap;
+    private final Map<Integer, DeliveryAgent> deliveryMap;
+    private final Map<String, DeliveryAgent> emailMap;
 
     private DeliveryRepository() {
         deliveryMap = new HashMap<>();
+        emailMap = new HashMap<>();
     }
 
     public static DeliveryRepository getInstance() {
@@ -20,19 +22,43 @@ public class DeliveryRepository {
         return instance;
     }
 
-    public void addDeliveryBoy(DeliveryBoy deliveryBoy) {
-        deliveryMap.put(deliveryBoy.getId(), deliveryBoy);
+    public Map<Integer, DeliveryAgent> getDeliveryMap() {
+        return deliveryMap;
+    }
+
+    public void addDeliveryBoy(DeliveryAgent deliveryAgent) {
+
+        String email =
+                deliveryAgent.getEmail().toLowerCase();
+
+        if (emailMap.containsKey(email)) {
+            System.out.println("Email already exists.");
+            return;
+        }
+
+        deliveryMap.put(deliveryAgent.getId(), deliveryAgent);
+        emailMap.put(email, deliveryAgent);
     }
 
     public void removeDeliveryBoy(int id) {
-        deliveryMap.remove(id);
-    }
 
-    public DeliveryBoy findById(int id) {
+        DeliveryAgent agent =
+                deliveryMap.remove(id);
+
+        if (agent != null) {
+            emailMap.remove(
+                    agent.getEmail().toLowerCase()
+            );
+        }
+    }
+    public DeliveryAgent findByEmail(String email) {
+        return emailMap.get(email.toLowerCase());
+    }
+    public DeliveryAgent findById(int id) {
         return deliveryMap.get(id);
     }
 
-    public List<DeliveryBoy> findAll() {
+    public List<DeliveryAgent> findAll() {
         return new ArrayList<>(deliveryMap.values());
     }
 }

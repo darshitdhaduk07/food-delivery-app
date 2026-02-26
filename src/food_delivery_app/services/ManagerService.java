@@ -5,8 +5,7 @@ import food_delivery_app.menu.MenuCategory;
 import food_delivery_app.menu.MenuComponent;
 import food_delivery_app.menu.MenuItem;
 import food_delivery_app.menu.MenuStore;
-import food_delivery_app.model.DeliveryBoy;
-import food_delivery_app.model.Manager;
+import food_delivery_app.model.DeliveryAgent;
 import food_delivery_app.model.Order;
 import food_delivery_app.model.IOrderStatus;
 import food_delivery_app.repository.CustomerRepository;
@@ -15,12 +14,15 @@ import food_delivery_app.repository.OrderRepository;
 
 import java.util.List;
 
+
 public class ManagerService {
 
     private final OrderRepository orderRepo;
     private final CustomerRepository customerRepo;
     private final DeliveryRepository deliveryRepo;
     private DiscountStrategy discountStrategy;
+    private final DeliveryService deliveryService = new DeliveryService();
+
     public ManagerService() {
         this.orderRepo = OrderRepository.getInstance();
         this.customerRepo = CustomerRepository.getInstance();
@@ -30,36 +32,38 @@ public class ManagerService {
 
     //for menu
     public void showMenu() {
-        MenuStore.getMenu().display(0);
+
+
+        System.out.println("==============================================");
+        System.out.printf("%-5s %-12s %-18s %-10s%n", "ID", "TYPE", "NAME", "PRICE");
+        System.out.println("==============================================");
+
+        MenuStore.getMenu().displayTable();
+
+
     }
 
     public void addCategory(String name) {
 
-        MenuStore.getMenu()
-                .add(new MenuCategory(name));
-
-        System.out.println("Category added.");
+        MenuStore.getMenu().add(new MenuCategory(name));
     }
-    public void addItemToCategory(int categoryId,
-                                  String itemName,
-                                  double price) {
 
-        MenuComponent comp =
-                MenuStore.getMenu().findMenuComponentById(categoryId);
+    public void addItemToCategory(int categoryId, String itemName, double price) {
+
+        MenuComponent comp = MenuStore.getMenu().findMenuComponentById(categoryId);
 
         if (comp instanceof MenuCategory category) {
 
             category.add(new MenuItem(itemName, price));
-            System.out.println("Item added.");
 
         } else {
             System.out.println("Invalid category ID.");
         }
     }
+
     public void updatePrice(int itemId, double newPrice) {
 
-        MenuComponent comp =
-                MenuStore.getMenu().findMenuComponentById(itemId);
+        MenuComponent comp = MenuStore.getMenu().findMenuComponentById(itemId);
 
         if (comp instanceof MenuItem item) {
 
@@ -70,11 +74,10 @@ public class ManagerService {
             System.out.println("Invalid item ID.");
         }
     }
-    public void changeAvailability(int itemId,
-                                   boolean status) {
 
-        MenuComponent comp =
-                MenuStore.getMenu().findMenuComponentById(itemId);
+    public void changeAvailability(int itemId, boolean status) {
+
+        MenuComponent comp = MenuStore.getMenu().findMenuComponentById(itemId);
 
         if (comp instanceof MenuItem item) {
 
@@ -134,9 +137,11 @@ public class ManagerService {
 
     //customer view
     public void showAllCustomers() {
-        customerRepo.findAll()
-                .forEach(System.out::println);
+        System.out.printf("%-5s %-15s %-25s %-20s%n",
+                "ID", "NAME", "EMAIL", "ADDRESSES");
+        customerRepo.findAll().forEach(System.out::println);
     }
+
     public void removeCustomer(int customerId) {
         customerRepo.removeCustomer(customerId);
         System.out.println("Customer removed.");
@@ -144,78 +149,53 @@ public class ManagerService {
 
 
     //for delivery boy
-    public void addDeliveryBoy(DeliveryBoy boy) {
+    public void addDeliveryBoy(DeliveryAgent boy) {
         deliveryRepo.addDeliveryBoy(boy);
         System.out.println("Delivery boy added.");
     }
 
-    private void reassignOrders(DeliveryBoy removedBoy) {
-
-        List<Order> orders = removedBoy.getAssignedOrders();
-
-        if (orders.isEmpty()) return;
-
-        List<DeliveryBoy> others =
-                deliveryRepo.findAll()
-                        .stream()
-                        .filter(b -> b.getId() != removedBoy.getId())
-                        .toList();
-
-        if (others.isEmpty()) {
-            System.out.println("No other delivery boys available.");
-            return;
-        }
-
-        int index = 0;
-
-        for (Order order : orders) {
-
-            DeliveryBoy newBoy =
-                    others.get(index % others.size());
-
-            // assign to new boy
-            newBoy.assignOrder(order);
-
-            // update order reference
-            order.assignDeliveryBoy(newBoy);
-
-            index++;
-        }
-
-        orders.clear(); // remove from old boy
-    }
-
     public void removeDeliveryBoy(int id) {
 
-        DeliveryBoy boy = deliveryRepo.findById(id);
+        DeliveryAgent boy = deliveryRepo.findById(id);
 
         if (boy == null) {
             System.out.println("Delivery boy not found.");
             return;
         }
-        //prevent remvoe last delivery boy
+
         if (deliveryRepo.findAll().size() <= 1) {
             System.out.println("Cannot remove the last delivery boy.");
             return;
         }
 
-        // reassign active orders
-        reassignOrders(boy);
+        // if busy -> complete current order first
+        if (!boy.isAvailable()) {
 
-        // remove from repository
+            Order order = orderRepo.findAll().stream().filter(o -> o.getDeliveryBoy() != null && o.getDeliveryBoy().getId() == boy.getId() && o.getStatus() == IOrderStatus.ON_THE_WAY).findFirst().orElse(null);
+
+            if (order != null) {
+                deliveryService.completeDelivery(order);
+                System.out.println("Current order completed before removal.");
+            }
+        }
+
         deliveryRepo.removeDeliveryBoy(id);
 
-        System.out.println("Delivery boy removed and orders reassigned.");
+        System.out.println("Delivery boy removed successfully.");
     }
 
     public void showAllDeliveryBoys() {
 
-        List<DeliveryBoy> boys = deliveryRepo.findAll();
+        List<DeliveryAgent> boys = deliveryRepo.findAll();
 
         if (boys.isEmpty()) {
             System.out.println("No delivery boys.");
             return;
         }
+        System.out.printf("%-5s %-15s %-12s%n",
+                "ID", "NAME", "STATUS");
+
+        System.out.println("-----------------------------------");
 
         boys.forEach(System.out::println);
     }

@@ -2,7 +2,7 @@ package food_delivery_app.services;
 
 import food_delivery_app.cart.Cart;
 import food_delivery_app.model.Customer;
-import food_delivery_app.model.DeliveryBoy;
+import food_delivery_app.model.DeliveryAgent;
 import food_delivery_app.model.Manager;
 import food_delivery_app.repository.CustomerRepository;
 import food_delivery_app.repository.DeliveryRepository;
@@ -21,7 +21,7 @@ public class AuthenticationService {
                 InputValidator.readEmail("Email: ");
 
         int password =
-                InputValidator.readInt("Password: ");
+                InputValidator.readPassword("Password: ");
 
         Customer customer =
                 customerRepo.findByEmail(email);
@@ -32,15 +32,27 @@ public class AuthenticationService {
 
         return null;
     }
-//    public Manager loginManager()
-//    {
-//        String email =
-//                InputValidator.readEmail("Email: ");
-//
-//        int password =
-//                InputValidator.readInt("Password: ");
-//        Manager manager =
-//    }
+    public Manager loginManager()
+    {
+        Manager manager = Manager.getInstance();
+
+        if(manager == null)
+        {
+            System.out.println("First Create Manager");
+            manager = Manager.createManager();
+        }
+        String email =
+                InputValidator.readEmail("Enter Email: ");
+
+        int password =
+                InputValidator.readPassword("Enter Password: ");
+
+
+
+        if(manager.getEmail().equals(email) && manager.getPassword() == password)
+            return manager;
+        return null;
+    }
 
     public void registerCustomer() {
         String name =
@@ -50,7 +62,7 @@ public class AuthenticationService {
                 InputValidator.readEmail("Email: ");
 
         int password =
-                InputValidator.readInt("Password: ");
+                InputValidator.readPassword("Password: ");
 
         if (customerRepo.findByEmail(email) != null) {
             System.out.println("Email already exists.");
@@ -66,14 +78,14 @@ public class AuthenticationService {
 
     }
 
-    public DeliveryBoy loginDelivery() {
+    public DeliveryAgent loginDelivery() {
 
         String email =
                 InputValidator.readEmail("Email: ");
         int password =
-                InputValidator.readInt("Password: ");
+                InputValidator.readPassword("Password: ");
 
-        for (DeliveryBoy boy : deliveryRepo.findAll()) {
+        for (DeliveryAgent boy : deliveryRepo.findAll()) {
 
             if (boy.getEmail().equals(email)
                     && boy.getPassword() == password)
