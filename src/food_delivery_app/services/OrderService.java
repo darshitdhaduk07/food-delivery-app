@@ -2,6 +2,7 @@ package food_delivery_app.services;
 
 import food_delivery_app.cart.Cart;
 import food_delivery_app.discount.DiscountStrategy;
+import food_delivery_app.exception.PaymentFailedException;
 import food_delivery_app.model.*;
 import food_delivery_app.payment.PaymentMethod;
 import food_delivery_app.payment.PaymentProcessor;
@@ -10,20 +11,19 @@ import food_delivery_app.repository.OrderRepository;
 import food_delivery_app.utility.InputValidator;
 
 import java.util.List;
-import java.util.Map;
 
 public class OrderService {
 
     private final OrderRepository orderRepo;
     private final DeliveryRepository deliveryRepository;
     private final CartService cartService;
-    private final DeliveryService deliveryService;
+    private final DeliveryAgentService deliveryAgentService;
     private final InvoiceService invoiceService = new InvoiceService();
 
     public OrderService() {
         this.orderRepo = OrderRepository.getInstance();
         this.cartService = new CartService();
-        this.deliveryService = new DeliveryService();
+        this.deliveryAgentService = new DeliveryAgentService();
         this.deliveryRepository = DeliveryRepository.getInstance();
     }
     public boolean processPayment(double amount)
@@ -42,7 +42,7 @@ public class OrderService {
     }
 
     //place order
-    public Order placeOrder(Customer customer, Address deliveryAddress, DiscountStrategy discountStrategy) throws InterruptedException {
+    public Order placeOrder(Customer customer, Address deliveryAddress, DiscountStrategy discountStrategy) throws InterruptedException,PaymentFailedException {
 
         Cart cart = customer.getCart();
 
@@ -73,8 +73,9 @@ public class OrderService {
         Thread.sleep(2000);
 
         if (!paymentSuccess) {
-            System.out.println("\nPayment failed.\n");
-            return null;
+            throw new PaymentFailedException(
+                    "Payment failed. Order not placed."
+            );
         }
         else {
             System.out.println("Success!\n");
@@ -88,7 +89,7 @@ public class OrderService {
         //save order
         orderRepo.addOrderToHistory(order);
 
-        DeliveryAgent agent = deliveryService.assignDeliveryAgent(order);
+        DeliveryAgent agent = deliveryAgentService.assignDeliveryAgent(order);
         if(agent != null)
         {
             order.setDeliveryAgent(agent);

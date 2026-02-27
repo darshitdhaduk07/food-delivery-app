@@ -21,7 +21,7 @@ public class ManagerService {
     private final CustomerRepository customerRepo;
     private final DeliveryRepository deliveryRepo;
     private DiscountStrategy discountStrategy;
-    private final DeliveryService deliveryService = new DeliveryService();
+    private final DeliveryAgentService deliveryAgentService = new DeliveryAgentService();
 
     public ManagerService() {
         this.orderRepo = OrderRepository.getInstance();
@@ -174,7 +174,7 @@ public class ManagerService {
             Order order = orderRepo.findAll().stream().filter(o -> o.getDeliveryBoy() != null && o.getDeliveryBoy().getId() == boy.getId() && o.getStatus() == IOrderStatus.ON_THE_WAY).findFirst().orElse(null);
 
             if (order != null) {
-                deliveryService.completeDelivery(order);
+                deliveryAgentService.completeDelivery(order);
                 System.out.println("Current order completed before removal.");
             }
         }

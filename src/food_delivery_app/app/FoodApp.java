@@ -1,6 +1,7 @@
 package food_delivery_app.app;
 
 import food_delivery_app.cart.Cart;
+import food_delivery_app.exception.PaymentFailedException;
 import food_delivery_app.menu.*;
 import food_delivery_app.model.*;
 import food_delivery_app.services.*;
@@ -11,7 +12,7 @@ public class FoodApp {
     static AuthenticationService auth = new AuthenticationService();
     static CartService cartService = new CartService();
     static OrderService orderService = new OrderService();
-    static DeliveryService deliveryService = new DeliveryService();
+    static DeliveryAgentService deliveryAgentService = new DeliveryAgentService();
     static ManagerService managerService = new ManagerService();
     static CustomerService customerService = new CustomerService();
 
@@ -319,7 +320,12 @@ public class FoodApp {
 
                     try {
                         orderService.placeOrder(customer, address, managerService.getDiscountStrategy());
-                    } catch (InterruptedException e) {
+                    }
+                    catch (PaymentFailedException e)
+                    {
+                        System.out.println(e.getMessage());
+                    }
+                    catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
                 }
@@ -436,7 +442,7 @@ public class FoodApp {
                 case 1 -> {
 
                     Order current =
-                            deliveryService.getCurrentOrder(boy);
+                            deliveryAgentService.getCurrentOrder(boy);
 
                     if (current == null) {
                         System.out.println("No active order.");
@@ -460,7 +466,7 @@ public class FoodApp {
 
                     if (order != null && order.getDeliveryBoy() == boy) {
 
-                        deliveryService.markOutForDelivery(order);
+                        deliveryAgentService.markOutForDelivery(order);
 
                     } else {
                         System.out.println("Invalid order.");
@@ -474,7 +480,7 @@ public class FoodApp {
 
                     if (order != null && order.getDeliveryBoy() == boy) {
 
-                        deliveryService.completeDelivery(order);
+                        deliveryAgentService.completeDelivery(order);
 
                     } else {
                         System.out.println("Invalid order.");
@@ -486,7 +492,7 @@ public class FoodApp {
 
                     System.out.println("---------------------------------------------------------------");
 
-                    deliveryService.getOrdersByDeliveryBoy(boy).stream().filter(o -> o.getStatus() == IOrderStatus.DELIVERED).forEach(System.out::println);
+                    deliveryAgentService.getOrdersByDeliveryBoy(boy).stream().filter(o -> o.getStatus() == IOrderStatus.DELIVERED).forEach(System.out::println);
                 }
 
                 case 0 -> {

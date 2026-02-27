@@ -9,7 +9,7 @@ import food_delivery_app.repository.OrderRepository;
 import java.util.List;
 import java.util.Map;
 
-public class DeliveryService {
+public class DeliveryAgentService {
 
     private final DeliveryRepository deliveryRepo;
     private final OrderRepository orderRepo;
@@ -17,7 +17,7 @@ public class DeliveryService {
     // round robin pointer
     private int currentIndex = 0;
 
-    public DeliveryService() {
+    public DeliveryAgentService() {
         this.deliveryRepo = DeliveryRepository.getInstance();
         this.orderRepo = OrderRepository.getInstance();
     }
