@@ -4,9 +4,17 @@ import java.util.*;
 
 public class MenuCategory extends MenuComponent{
     LinkedHashMap<String, MenuComponent> components;
+    private boolean available = true;
     public MenuCategory(String name) {
         super(name);
         components = new LinkedHashMap<>();
+    }
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailability(boolean status) {
+        this.available = status;
     }
 
     @Override
@@ -21,7 +29,7 @@ public class MenuCategory extends MenuComponent{
         }
 
         components.put(key, component);
-        System.out.println("Item added");
+        System.out.println("Category added");
     }
 
     @Override
@@ -54,14 +62,29 @@ public class MenuCategory extends MenuComponent{
 
     @Override
     public void displayTable() {
-
+        if(!available)
+            return;
         System.out.println();
-        System.out.println("----------- [" + id + "] "
+        System.out.println("--------------- [" + id + "] "
                 + name.toUpperCase()
-                + " -----------");
+                + " ----------------");
 
         for (MenuComponent component : components.values()) {
             component.displayTable();
         }
+    }
+    @Override
+    public void displayAllTable() {
+        System.out.println();
+        System.out.print("--------------- [" + id + "] "
+                + name.toUpperCase()
+                + " ----------------");
+        if(!available)
+            System.out.print("  N/A");
+        System.out.println();
+        for (MenuComponent component : components.values()) {
+            component.displayAllTable();
+        }
+
     }
 }

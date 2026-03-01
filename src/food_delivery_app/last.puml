@@ -1,0 +1,328 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' =====================================================
+' CONTROLLERS
+' =====================================================
+package controller {
+
+class AuthController {
+  - AuthenticationService auth
+  - ManagerController managerController
+  - CustomerController customerController
+  - DeliveryController deliveryController
+  + start()
+  + managerMenu()
+  + customerMenu()
+}
+
+class ManagerController {
+  - ManagerService managerService
+  + start(manager)
+}
+
+class CustomerController {
+  - CartService cartService
+  - ManagerService managerService
+  - CustomerService customerService
+  - OrderService orderService
+  + start(customer)
+}
+
+class DeliveryController {
+  - DeliveryAgentService deliveryAgentService
+  - OrderService orderService
+  + start(agent)
+}
+
+AuthController --> AuthenticationService
+AuthController --> ManagerController
+AuthController --> CustomerController
+AuthController --> DeliveryController
+
+ManagerController --> ManagerService
+CustomerController --> CustomerService
+CustomerController --> CartService
+CustomerController --> OrderService
+DeliveryController --> DeliveryAgentService
+DeliveryController --> OrderService
+}
+
+' =====================================================
+' SERVICES
+' =====================================================
+package service {
+
+class AuthenticationService {
+  - CustomerRepository customerRepo
+  - DeliveryRepository deliveryRepo
+  + registerCustomer()
+  + loginCustomer()
+  + registerManager()
+  + loginManager()
+  + registerDeliveryAgent()
+  + loginDeliveryAgent()
+}
+
+class ManagerService {
+  - OrderRepository orderRepo
+  - CustomerRepository customerRepo
+  - DeliveryRepository deliveryRepo
+  + showMenu()
+  + addCategory()
+  + addItemToCategory()
+  + updateDiscount()
+  + showAllOrders()
+}
+
+class CustomerService {
+  + getOrderHistory(customer)
+}
+
+class CartService {
+  + addItem()
+  + removeItem()
+  + updateQuantity()
+  + calculateTotal()
+}
+
+class OrderService {
+  - OrderRepository orderRepo
+  - CartService cartService
+  - InvoiceService invoiceService
+  + placeOrder()
+  + processPayment()
+  + nextStatusAsync()
+}
+
+class DeliveryAgentService {
+  + assignDeliveryAgent(order)
+  + completeDelivery(order)
+  + getCurrentOrder(agent)
+}
+
+class InvoiceService {
+  + generateInvoice()
+}
+
+class NotificationService {
+  + sendNotification()
+}
+
+OrderService --> CartService
+OrderService --> InvoiceService
+OrderService --> NotificationService
+OrderService --> DeliveryAgentService
+
+DeliveryAgentService --> OrderService
+ManagerService --> NotificationService
+ManagerService --> DeliveryAgentService
+
+AuthenticationService --> CustomerRepository
+AuthenticationService --> DeliveryRepository
+}
+
+' =====================================================
+' REPOSITORIES (Singleton)
+' =====================================================
+package repository {
+
+class CustomerRepository <<Singleton>> {
+  - Map customerMap
+  - Map emailMap
+  + addCustomer()
+  + findById()
+}
+
+class DeliveryRepository <<Singleton>> {
+  - Map deliveryMap
+  - Map emailMap
+  + addDeliveryAgent()
+  + findById()
+}
+
+class OrderRepository <<Singleton>> {
+  - Map orderHistory
+  - Deque pendingOrders
+  + addOrderToHistory()
+  + findById()
+}
+
+CustomerService --> CustomerRepository
+ManagerService --> CustomerRepository
+ManagerService --> DeliveryRepository
+DeliveryAgentService --> DeliveryRepository
+OrderService --> OrderRepository
+CustomerService --> OrderRepository
+DeliveryAgentService --> OrderRepository
+}
+
+' =====================================================
+' MODELS
+' =====================================================
+package model {
+
+class Address {
+  - id
+  - address
+}
+
+class Invoice {
+  - invoiceId
+  - grand
+  + printInvoice()
+}
+
+class Discount <<Singleton>> {
+  - name
+  - discountRate
+  - minAmount
+}
+
+class Cart {
+  - List<CartItem> cartItems
+  + addCartItem()
+  + clearCart()
+}
+
+class CartItem {
+  - MenuItem item
+  - quantity
+  + getTotalPrice()
+}
+
+class Notification {
+  - message
+  - time
+}
+
+interface Notifiable {
+  + addNotification()
+}
+
+class Order {
+  - id
+  - Customer customer
+  - DeliveryAgent deliveryAgent
+  - IOrderStatus status
+  + moveToNextState()
+  + assignDeliveryAgent()
+}
+
+class OrderItem {
+  - itemName
+  - quantity
+  - price
+}
+
+enum IOrderStatus
+
+abstract class MenuComponent {
+  - id
+  - name
+  + displayTable()
+}
+
+class MenuCategory {
+  - components
+  + add()
+  + findMenuComponentById()
+}
+
+class MenuItem {
+  - price
+  - available
+}
+
+class MenuStore <<Utility>>
+
+class User {
+  - id
+  - name
+  - email
+}
+
+class Customer {
+  - Cart cart
+  - List<Address> addresses
+}
+
+class DeliveryAgent {
+  - available
+}
+
+class Manager
+}
+
+' =====================================================
+' RELATIONSHIPS
+' =====================================================
+
+' User hierarchy
+User <|-- Customer
+User <|-- DeliveryAgent
+User <|-- Manager
+
+' Notification
+Notifiable <|.. Customer
+Notifiable <|.. DeliveryAgent
+NotificationService --> Notifiable
+NotificationService --> Notification
+
+' Cart
+Cart *-- CartItem
+CartItem --> MenuItem
+Customer --> Cart
+Customer --> Address
+
+' Menu (Composite Pattern)
+MenuComponent <|-- MenuCategory
+MenuComponent <|-- MenuItem
+MenuCategory *-- MenuComponent
+MenuStore *-- MenuCategory
+
+' Orders
+Order *-- OrderItem
+Order --> Customer
+Order --> DeliveryAgent
+Order --> Address
+Order --> IOrderStatus : status
+Invoice --> Order
+
+ManagerService --> Discount
+OrderService ..> Discount
+
+' =====================================================
+' PAYMENT (Strategy Pattern)
+' =====================================================
+package payment {
+
+interface PaymentStrategy {
+  + pay(amount)
+}
+
+class CashPayment
+class UpiPayment
+
+class PaymentFactory {
+  + getStrategy()
+}
+
+class PaymentProcessor {
+  + process()
+}
+
+enum PaymentMethod
+
+PaymentStrategy <|.. CashPayment
+PaymentStrategy <|.. UpiPayment
+
+PaymentFactory --> PaymentStrategy
+PaymentProcessor --> PaymentFactory
+PaymentProcessor --> PaymentMethod
+}
+
+OrderService --> PaymentProcessor
+
+@enduml

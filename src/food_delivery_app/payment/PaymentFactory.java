@@ -2,11 +2,11 @@ package food_delivery_app.payment;
 
 public class PaymentFactory {
 
-    public static PaymentStrategy getStrategy(PaymentMethod method) {
+    public static IPaymentStrategy getStrategy(PaymentMethod method) {
 
         return switch (method) {
-            case UPI -> new UpiPayment();
-            case CASH -> new CashPayment();
+            case UPI -> new UpiIPayment();
+            case CASH -> new CashIPayment();
         };
     }
 }

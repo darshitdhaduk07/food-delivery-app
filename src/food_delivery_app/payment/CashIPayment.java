@@ -1,6 +1,6 @@
 package food_delivery_app.payment;
 
-public class CashPayment implements PaymentStrategy {
+public class CashIPayment implements IPaymentStrategy {
 
     @Override
     public boolean pay(double amount) {

@@ -29,4 +29,5 @@ abstract public class MenuComponent {
     }
 
     public abstract void displayTable();
+    public abstract void displayAllTable();
 }

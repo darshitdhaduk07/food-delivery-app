@@ -36,13 +36,20 @@ public class ManagerService {
 
     //for menu
     public void showMenu() {
-        System.out.println("==============================================");
-        System.out.printf("%-5s %-12s %-18s %-10s%n", "ID", "TYPE", "NAME", "PRICE");
-        System.out.println("==============================================");
+        System.out.println("==================================================");
+        System.out.println("                    FOOD MENU");
+        System.out.println("==================================================");
 
         MenuStore.getMenu().displayTable();
     }
+    public void showAllMenu()
+    {
+        System.out.println("==================================================");
+        System.out.println("                    FOOD MENU");
+        System.out.println("==================================================");
 
+        MenuStore.getMenu().displayAllTable();
+    }
     public void addCategory(String name) {
 
         MenuStore.getMenu().add(new MenuCategory(name));
@@ -82,11 +89,18 @@ public class ManagerService {
         if (comp instanceof MenuItem item) {
 
             item.setAvailability(status);
-            System.out.println("Availability updated.");
 
-        } else {
+
+        } else if(comp instanceof MenuCategory category)
+        {
+            category.setAvailability(status);
+
+        }else {
             System.out.println("Invalid item ID.");
+            return;
         }
+        System.out.println("Availability updated.");
+
     }
     //for discount
 

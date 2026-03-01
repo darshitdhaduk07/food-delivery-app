@@ -33,11 +33,24 @@ public class MenuItem extends MenuComponent {
         if (!available) return;
 
         System.out.printf(
-                "%-5d %-12s %-18s ₹%-10.2f%n",
+                "  %-4d %-20s ....... ₹%7.2f%n",
                 id,
-                "ITEM",
                 name,
                 price
         );
+    }
+    @Override
+    public void displayAllTable() {
+
+        System.out.printf(
+                "  %-4d %-20s ....... ₹%7.2f",
+                id,
+                name,
+                price
+        );
+
+        if(!available)
+            System.out.print("    N/A");
+        System.out.println();
     }
 }

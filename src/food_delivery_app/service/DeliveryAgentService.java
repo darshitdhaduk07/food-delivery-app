@@ -23,13 +23,14 @@ public class DeliveryAgentService {
         this.notificationService = new NotificationService();
 
     }
-    public static void setOrderService(OrderService o) {
-        orderService = o;
-    }
-    public static OrderService getOrderService()
+    public static OrderService getOrderServiceInstance()
     {
         return orderService;
     }
+    public static void setOrderService(OrderService o) {
+        orderService = o;
+    }
+
     public DeliveryAgent assignDeliveryAgent(Order order) {
 
         Map<Integer, DeliveryAgent> deliveryMap =

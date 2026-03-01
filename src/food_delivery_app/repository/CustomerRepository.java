@@ -36,6 +36,10 @@ public class CustomerRepository {
     {
         return phoneNumbers.contains(phone);
     }
+    public void addPhoneNumber(String phone)
+    {
+        phoneNumbers.add(phone);
+    }
     // Add customer
     public void addCustomer(Customer customer) {
 

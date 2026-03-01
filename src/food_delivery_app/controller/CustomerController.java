@@ -13,7 +13,7 @@ public class CustomerController {
 
     private final ManagerService managerService = new ManagerService();
     private final CustomerService customerService = new CustomerService();
-    private final OrderService orderService = DeliveryAgentService.getOrderService();
+    private final OrderService orderService = DeliveryAgentService.getOrderServiceInstance();
     public boolean start(Customer customer) {
 
         while (true) {
@@ -82,8 +82,6 @@ public class CustomerController {
         }
     }
 
-    /* ===== ADDRESS MENU ===== */
-
     private void addressMenu(Customer customer) {
 
         while (true) {
@@ -129,7 +127,6 @@ public class CustomerController {
         }
     }
 
-    /* ===== NOTIFICATION ===== */
 
     private void notificationMenu(Customer customer) {
 
@@ -156,8 +153,6 @@ public class CustomerController {
             }
         }
     }
-
-    /* ===== CART ===== */
 
     private void cartMenu(Customer customer) {
         while (true) {

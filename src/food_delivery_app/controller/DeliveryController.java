@@ -8,9 +8,9 @@ import food_delivery_app.utility.InputValidator;
 
 public class DeliveryController {
 
-    private final DeliveryAgentService deliveryAgentService = new DeliveryAgentService();
+    private final DeliveryAgentService deliveryAgentService = OrderService.getInstanceDeliveryAgentServiceInstance();
 
-    private final OrderService orderService = new OrderService();
+    private final OrderService orderService = DeliveryAgentService.getOrderServiceInstance();
 
     public boolean start(DeliveryAgent agent) {
 

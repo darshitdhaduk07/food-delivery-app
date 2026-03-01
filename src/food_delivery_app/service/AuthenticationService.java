@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AuthenticationService {
     private final CustomerRepository customerRepo = CustomerRepository.getInstance();
-    private Set<String> phoneNumbers = customerRepo.getPhoneNumber();
+    private Set<String> customerRepoPhoneNumber = customerRepo.getPhoneNumber();
     private final DeliveryRepository deliveryRepo = DeliveryRepository.getInstance();
 
     public void registerCustomer() {
@@ -31,7 +31,7 @@ public class AuthenticationService {
         String address = InputValidator.readString("Address: ");
 
         String phone = InputValidator.readPhoneNumber("Mobile No.: ");
-        if(phoneNumbers.contains(phone))
+        if(customerRepoPhoneNumber.contains(phone))
         {
             System.out.println("Mobile number already Exist.");
             return;
@@ -133,7 +133,7 @@ public class AuthenticationService {
         }
         String pass = InputValidator.readPassword("Password: ");
         String phone = InputValidator.readPhoneNumber("Mobile No: ");
-        if(phoneNumbers.contains(phone))
+        if(deliveryRepo.isPhoneNumberExist(phone))
         {
             System.out.println("Mobile number already Exist");
             return null;

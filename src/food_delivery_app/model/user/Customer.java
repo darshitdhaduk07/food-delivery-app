@@ -2,14 +2,14 @@ package food_delivery_app.model.user;
 
 import food_delivery_app.model.cart.Cart;
 import food_delivery_app.model.Address;
-import food_delivery_app.model.notification.Notifiable;
+import food_delivery_app.model.notification.INotifiable;
 import food_delivery_app.model.notification.Notification;
 import food_delivery_app.utility.InputValidator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Customer extends User implements Notifiable {
+public class Customer extends User implements INotifiable {
     private static int counter = 0;
     private String phoneNumber;
     List<Address> addresses;

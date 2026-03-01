@@ -1,6 +1,6 @@
 package food_delivery_app.service;
 
-import food_delivery_app.model.notification.Notifiable;
+import food_delivery_app.model.notification.INotifiable;
 import food_delivery_app.model.notification.Notification;
 
 import java.util.concurrent.ExecutorService;
@@ -16,7 +16,7 @@ public class NotificationService {
         executor = Executors.newFixedThreadPool(2);
     }
 
-    public void sendNotification(Notifiable user,
+    public void sendNotification(INotifiable user,
                                  String message) {
 
         executor.submit(() ->

@@ -4,7 +4,7 @@ public class PaymentProcessor {
 
     public boolean process(PaymentMethod method, double amount) {
 
-        PaymentStrategy strategy =
+        IPaymentStrategy strategy =
                 PaymentFactory.getStrategy(method);
 
         return strategy.pay(amount);

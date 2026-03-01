@@ -16,18 +16,13 @@ import food_delivery_app.utility.InputValidator;
 
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class OrderService {
 
     private final OrderRepository orderRepo;
-    private final DeliveryRepository deliveryRepository;
     private final CartService cartService;
     private final InvoiceService invoiceService = new InvoiceService();
-    private final NotificationService notificationService ;
     private final ExecutorService executor;
     private static DeliveryAgentService deliveryAgentService;
     private final Map<Integer, CompletableFuture<Void>> orderChains
@@ -36,9 +31,11 @@ public class OrderService {
     public OrderService() {
         this.orderRepo = OrderRepository.getInstance();
         this.cartService = new CartService();
-        this.deliveryRepository = DeliveryRepository.getInstance();
-        this.notificationService = new NotificationService();
         this.executor = Executors.newFixedThreadPool(2);
+    }
+    public static DeliveryAgentService getInstanceDeliveryAgentServiceInstance()
+    {
+        return deliveryAgentService;
     }
     public static void setDeliveryAgentService(DeliveryAgentService service) {
         deliveryAgentService = service;
@@ -53,8 +50,6 @@ public class OrderService {
         int choice = InputValidator.readInt("Enter your choice for payment: ", 1, PaymentMethod.values().length);
         PaymentProcessor processor = new PaymentProcessor();
         return processor.process(PaymentMethod.values()[choice - 1], amount);
-
-
     }
 
     //place order

@@ -1,7 +1,7 @@
 package food_delivery_app.model.notification;
 
 
-public interface Notifiable {
+public interface INotifiable {
 
     void addNotification(Notification n);
     int getId();

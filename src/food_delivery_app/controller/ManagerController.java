@@ -14,7 +14,6 @@ public class ManagerController {
     private final ManagerService managerService =
             new ManagerService();
     private final DeliveryRepository deliveryRepository = DeliveryRepository.getInstance();
-    private Set<String> phoneNumbers = deliveryRepository.getPhoneNumber();
     private AuthenticationService authenticationService = new AuthenticationService();
     public boolean start(User manager) {
 
@@ -56,8 +55,6 @@ public class ManagerController {
             }
         }
     }
-
-    /* ===== MENU SECTION ===== */
 
     private void menuSection() {
 
@@ -108,8 +105,8 @@ public class ManagerController {
                 }
 
                 case 5 -> {
-                    managerService.showMenu();
-                    int id = InputValidator.readPositiveInt("Item ID: ");
+                    managerService.showAllMenu();
+                    int id = InputValidator.readPositiveInt("Enter ID: ");
                     boolean status = InputValidator.readBoolean("Available");
                     managerService.changeAvailability(id, status);
                 }
@@ -122,8 +119,6 @@ public class ManagerController {
             }
         }
     }
-
-    /* ===== ORDER SECTION ===== */
 
     private void orderSection() {
 
@@ -152,8 +147,6 @@ public class ManagerController {
         }
     }
 
-    /* ===== CUSTOMER SECTION ===== */
-
     private void customerSection() {
 
         while (true) {
@@ -174,11 +167,12 @@ public class ManagerController {
                 }
 
                 case 2 -> {
+                    managerService.showAllCustomers();
                     int id = InputValidator.readInt("Customer ID: ");
                     managerService.removeCustomer(id);
                 }
                 case 3 -> {
-
+                    managerService.showAllCustomers();
                     int id =
                             InputValidator.readPositiveInt("Customer ID: ");
 
@@ -202,8 +196,6 @@ public class ManagerController {
             }
         }
     }
-
-    /* ===== DELIVERY SECTION ===== */
 
 
     private void deliverySection() {
@@ -231,11 +223,12 @@ public class ManagerController {
                 }
 
                 case 3 -> {
+                    managerService.showAllDeliveryAgents();
                     int id = InputValidator.readInt("DeliveryAgent ID: ");
                     managerService.removeDeliveryAgent(id);
                 }
                 case 4 -> {
-
+                    managerService.showAllDeliveryAgents();
                     int id =
                             InputValidator.readPositiveInt("DeliveryAgent ID: ");
 
