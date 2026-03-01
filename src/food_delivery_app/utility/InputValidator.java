@@ -7,6 +7,7 @@ public class InputValidator {
     private static Scanner scanner = new Scanner(System.in);
     private static final String EMAIL_REGEX =
             "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
+
     private static final String UPI_REGEX =
             "^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$";
     /**
@@ -27,25 +28,33 @@ public class InputValidator {
         }
         return value;
     }
-    public static int readPassword(String prompt) {
+    public static String readPassword(String prompt) {
 
         while (true) {
 
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
 
-            // only digits allowed
-            if (input.matches("^[0-9]+$")) {
-
-                try {
-                    return Integer.parseInt(input);
-                } catch (NumberFormatException e) {
-                    System.out.println("Password too large.");
-                }
-
-            } else {
-                System.out.println("Password must contain only numbers (0-9).");
+            // minimum length check
+            if (input.length() < 6) {
+                System.out.println("Password must be at least 6 characters.");
+                continue;
             }
+
+            // regex:
+            // (?=.*[A-Za-z])   -> at least one letter
+            // (?=.*\\d)        -> at least one digit
+            // (?=.*[@$!%*?&])  -> at least one special char
+            String regex =
+                    "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]+$";
+
+            if (input.matches(regex)) {
+                return input;
+            }
+
+            System.out.println(
+                    "Password must contain letter, number and special character."
+            );
         }
     }
     /**
@@ -125,22 +134,28 @@ public class InputValidator {
     }
 
     //read double
-    public static double readDouble(String prompt) {
-        double value;
+    public static double readPositiveDouble(String prompt) {
 
         while (true) {
+
             System.out.print(prompt);
-            String input = scanner.nextLine();
+
+            String input = scanner.nextLine().trim();
 
             try {
-                value = Double.parseDouble(input);
-                break; // valid double
+
+                double value = Double.parseDouble(input);
+
+                if (value > 0) {
+                    return value;
+                }
+
+                System.out.println("Value must be greater than 0.");
+
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input! Please enter a decimal number.");
+                System.out.println("Enter valid number");
             }
         }
-
-        return value;
     }
     //read boolean
     public static boolean readBoolean(String prompt) {
@@ -157,26 +172,6 @@ public class InputValidator {
             }
         }
     }
-    /**
-     * Reads valid UPI ID
-     */
-    public static String readUPI(String prompt) {
-
-        String upi;
-
-        while (true) {
-
-            System.out.print(prompt);
-            upi = scanner.nextLine().trim();
-
-            if (Pattern.matches(UPI_REGEX, upi))
-                break;
-
-            System.out.println("Invalid UPI ID format!");
-        }
-
-        return upi;
-    }
     public static int readPositiveInt(String prompt) {
 
         int value;
@@ -192,5 +187,48 @@ public class InputValidator {
             System.out.println("Enter a positive number (> 0).");
         }
     }
+    public static String readMessage(String prompt) {
 
+        String input;
+
+        while (true) {
+
+            System.out.print(prompt);
+            input = scanner.nextLine().trim();
+
+            // empty check
+            if (input.isEmpty()) {
+                System.out.println("Message cannot be empty.");
+                continue;
+            }
+
+//            // length check
+//            if (input.length() > 200) {
+//                System.out.println("Message too long (max 200 characters).");
+//                continue;
+//            }
+
+            return input;
+        }
+    }
+    public static String readPhoneNumber(String prompt) {
+
+        while (true) {
+
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+
+            // only digits + exactly 10 digits
+            if (!input.matches("^[6-9][0-9]{9}$")) {
+
+                System.out.println(
+                        "Invalid phone number. " +
+                                "Enter exactly 10 digits."
+                );
+                continue;
+            }
+
+            return input;
+        }
+    }
 }

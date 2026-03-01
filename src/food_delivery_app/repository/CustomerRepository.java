@@ -1,14 +1,17 @@
 package food_delivery_app.repository;
 
-import food_delivery_app.model.Customer;
+import food_delivery_app.model.user.Customer;
 
 import java.util.*;
 
 public class CustomerRepository {
 
     private static CustomerRepository instance;
+//    customerid & customer
     private final Map<Integer, Customer> customerMap;
+    //email & customer
     private final Map<String, Customer> emailMap;
+    private final Set<String> phoneNumbers = new HashSet<>();
 
     private CustomerRepository() {
         customerMap = new HashMap<>();
@@ -21,20 +24,24 @@ public class CustomerRepository {
         }
         return instance;
     }
-
+    public Set<String> getPhoneNumber()
+    {
+        return phoneNumbers;
+    }
+    public boolean isCustomerExist(String email)
+    {
+        return emailMap.containsKey(email);
+    }
+    public boolean isPhoneNumberExist(String phone)
+    {
+        return phoneNumbers.contains(phone);
+    }
     // Add customer
     public void addCustomer(Customer customer) {
 
-        String email =
-                customer.getEmail().toLowerCase();
-
-        if (emailMap.containsKey(email)) {
-            System.out.println("Email already exists.");
-            return;
-        }
-
         customerMap.put(customer.getId(), customer);
-        emailMap.put(email, customer);
+        phoneNumbers.add(customer.getPhoneNumber());
+        emailMap.put(customer.getEmail(), customer);
     }
     // Remove customer
     public void removeCustomer(int id) {
@@ -45,8 +52,10 @@ public class CustomerRepository {
             emailMap.remove(
                     customer.getEmail().toLowerCase()
             );
+            phoneNumbers.remove(customer.getPhoneNumber());
         }
     }
+
     // Find by id
     public Customer findById(int id) {
         return customerMap.get(id);

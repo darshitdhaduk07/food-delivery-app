@@ -1,5 +1,8 @@
 package food_delivery_app.model;
 
+import food_delivery_app.model.order.Order;
+import food_delivery_app.model.order.OrderItem;
+
 import java.time.LocalDateTime;
 
 public class Invoice {

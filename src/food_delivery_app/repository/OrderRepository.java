@@ -1,19 +1,20 @@
 package food_delivery_app.repository;
 
 
-import food_delivery_app.model.DeliveryAgent;
-import food_delivery_app.model.Order;
+import food_delivery_app.model.user.DeliveryAgent;
+import food_delivery_app.model.order.Order;
 
 import java.util.*;
 
 public class OrderRepository {
 
     private static OrderRepository instance;
-    private final Map<Integer, Order> orderMap;
+    //orderid & order
+    private final Map<Integer, Order> orderHistory;
     private final Deque<Order> pendingOrders;
 
     private OrderRepository() {
-        orderMap = new HashMap<>();
+        orderHistory = new HashMap<>();
         pendingOrders = new ArrayDeque<>();
     }
 
@@ -25,31 +26,29 @@ public class OrderRepository {
     }
 
     public void addOrderToHistory(Order order) {
-        orderMap.put(order.getId(), order);
+        orderHistory.put(order.getId(), order);
     }
-    public void addOrder(Order order)
+
+    public void addOrderToPending(Order order)
     {
         pendingOrders.add(order);
     }
     public List<Order> getOrdersByDeliveryBoy(DeliveryAgent agent)
     {
-        return orderMap.values().stream().filter((o)->o.getDeliveryBoy() == agent).toList();
+        return orderHistory.values().stream().filter((o)->o.getDeliveryAgent() == agent).toList();
     }
     public Order getPendingOrder()
     {
         return pendingOrders.pollFirst();
     }
-    public void removeOrder(int orderId) {
-        orderMap.remove(orderId);
-    }
 
     public Order findById(int orderId) {
-        return orderMap.get(orderId);
+        return orderHistory.get(orderId);
     }
 
     public List<Order> findByCustomerId(int customerId) {
         List<Order> orders = new ArrayList<>();
-        for (Order o : orderMap.values()) {
+        for (Order o : orderHistory.values()) {
             if (o.getCustomer().getId() == customerId) {
                 orders.add(o);
             }
@@ -59,8 +58,8 @@ public class OrderRepository {
 
     public List<Order> findByDeliveryBoyId(int deliveryBoyId) {
         List<Order> orders = new ArrayList<>();
-        for (Order o : orderMap.values()) {
-            if (o.getDeliveryBoy() != null && o.getDeliveryBoy().getId() == deliveryBoyId) {
+        for (Order o : orderHistory.values()) {
+            if (o.getDeliveryAgent() != null && o.getDeliveryAgent().getId() == deliveryBoyId) {
                 orders.add(o);
             }
         }
@@ -68,6 +67,6 @@ public class OrderRepository {
     }
 
     public List<Order> findAll() {
-        return new ArrayList<>(orderMap.values());
+        return new ArrayList<>(orderHistory.values());
     }
 }
