@@ -104,7 +104,7 @@ public class OrderService {
         //print invoice
         System.out.println("\nInvoice generating... \n");
         Thread.sleep(2000);
-        invoiceService.generateInvoice(order, finalAmount, discount);
+        invoiceService.generateInvoice(order, finalAmount, finalAmount*discount);
 
     }
     public void nextStatusAsync(Order order, int delaySec) {

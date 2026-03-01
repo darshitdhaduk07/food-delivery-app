@@ -12,16 +12,14 @@ public class FoodApp {
 
     static ManagerService managerService = new ManagerService();
     static CustomerService customerService = new CustomerService();
-    static final OrderService orderService =
-            new OrderService();
-
-    static final DeliveryAgentService deliveryAgentService =
-            new DeliveryAgentService();
+    static final OrderService orderService = new OrderService();
+    static final DeliveryAgentService deliveryAgentService = new DeliveryAgentService();
 
     static {
         OrderService.setDeliveryAgentService(deliveryAgentService);
         DeliveryAgentService.setOrderService(orderService);
     }
+
     public static void main(String[] args) {
 
         setupInitialData();
@@ -46,17 +44,14 @@ public class FoodApp {
         root.add(pizza);
         root.add(drinks);
 
-        DeliveryAgent d1 =
-                new DeliveryAgent("Smit","raj@mail.com","Dd@123","9723138456");
+        DeliveryAgent d1 = new DeliveryAgent("Smit", "smit@mail.com", "Dd@123", "9723138456");
 
-        DeliveryAgent d2 =
-                new DeliveryAgent("Vivek","amit@gmail.com","Dd@123","8000824129");
+        DeliveryAgent d2 = new DeliveryAgent("Vivek", "vivek@gmail.com", "Dd@123", "8000824129");
 
         managerService.addDeliveryAgent(d1);
         managerService.addDeliveryAgent(d2);
 
-        Customer customer =
-                new Customer("Darshit","darshit@mail.com","Dd@111","9723521513");
+        Customer customer = new Customer("Darshit", "darshit@mail.com", "Dd@111", "9723521513");
 
         customer.setCart(new Cart());
         customer.getAddresses().add(new Address("Rajkot"));
