@@ -9,11 +9,11 @@ public class Invoice {
 
     private static int counter = 0;
 
-    private int invoiceId;
-    private Order order;
-    private double grand;
-    private LocalDateTime time;
-    private double discount;
+    private final int invoiceId;
+    private final Order order;
+    private final double grand;
+    private final LocalDateTime time;
+    private final double discount;
 
     public Invoice(Order order, double grandTotal,double discount) {
         this.invoiceId = ++counter;

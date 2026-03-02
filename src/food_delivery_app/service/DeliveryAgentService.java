@@ -15,14 +15,14 @@ public class DeliveryAgentService {
     private final DeliveryRepository deliveryRepo;
     private final OrderRepository orderRepo;
     private static OrderService orderService;
-    private NotificationService notificationService;
+    private final NotificationService notificationService;
 
     public DeliveryAgentService() {
         this.deliveryRepo = DeliveryRepository.getInstance();
         this.orderRepo = OrderRepository.getInstance();
         this.notificationService = new NotificationService();
-
     }
+
     public static OrderService getOrderServiceInstance()
     {
         return orderService;

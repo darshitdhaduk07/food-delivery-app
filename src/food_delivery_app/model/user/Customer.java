@@ -12,10 +12,10 @@ import java.util.List;
 public class Customer extends User implements INotifiable {
     private static int counter = 0;
     private String phoneNumber;
-    List<Address> addresses;
-    Cart cart;
-    List<Notification> currNotifications;
-    List<Notification> notificationsHistory;
+    private List<Address> addresses;
+    private Cart cart;
+    private List<Notification> currNotifications;
+    private List<Notification> notificationsHistory;
     private boolean panelOpen = false;
 
 

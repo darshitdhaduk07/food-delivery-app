@@ -2,7 +2,7 @@ package food_delivery_app.model;
 
 public class Address {
     private String address;
-    private int id;
+    private final int id;
     private static  int counter = 0;
     public Address(String address)
     {

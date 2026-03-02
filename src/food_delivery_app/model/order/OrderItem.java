@@ -2,9 +2,9 @@ package food_delivery_app.model.order;
 
 public class OrderItem {
 
-    private String itemName;
-    private int quantity;
-    private double price; // price per unit at time of order
+    private final String itemName;
+    private final int quantity;
+    private final double price; // price per unit at time of order
 
     public OrderItem(String itemName, int quantity, double price) {
         this.itemName = itemName;

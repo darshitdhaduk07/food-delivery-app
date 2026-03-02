@@ -19,7 +19,6 @@ public class CustomerService {
         this.orderRepo = OrderRepository.getInstance();
     }
 
-
     public void registerCustomer(Customer customer) {
         customerRepo.addCustomer(customer);
     }
@@ -27,7 +26,6 @@ public class CustomerService {
     public void removeCustomer(int customerId) {
         customerRepo.removeCustomer(customerId);
     }
-
 
     public Customer findById(int id) {
         return customerRepo.findById(id);
@@ -45,21 +43,8 @@ public class CustomerService {
     public void showAddresses(Customer customer) {
 
     }
+
     public List<Order> getOrderHistory(Customer customer) {
         return orderRepo.findByCustomerId(customer.getId());
-    }
-
-    public void showNotifications(Customer customer) {
-
-        List<Notification> notifications = customer.getCurrNotifications();
-
-        if (notifications.isEmpty()) {
-            System.out.println("No notifications.");
-            return;
-        }
-
-        for (Notification n : notifications) {
-            System.out.println(n);
-        }
     }
 }

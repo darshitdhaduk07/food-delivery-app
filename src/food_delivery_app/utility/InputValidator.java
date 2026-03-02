@@ -11,8 +11,8 @@ public class InputValidator {
     private static final String UPI_REGEX =
             "^[a-zA-Z0-9._-]{2,}@[a-zA-Z]{2,}$";
     /**
-     * Reads an integer from user input.
-     * Keeps asking until a valid integer is entered.
+      Reads an integer from user input.
+      Keeps asking until a valid integer is entered.
      */
     public static int readInt(String prompt) {
         int value;
@@ -58,7 +58,7 @@ public class InputValidator {
         }
     }
     /**
-     * Reads an integer within a range [min, max]
+      Reads an integer within a range [min, max]
      */
     public static int readInt(String prompt, int min, int max) {
         int value;
@@ -75,7 +75,7 @@ public class InputValidator {
 
 
     /**
-     * Reads non-empty string
+      Reads non-empty string
      */
     public static String readString(String prompt) {
         String input;
@@ -117,7 +117,7 @@ public class InputValidator {
     }
 
     /**
-     * Reads valid email
+      Reads valid email
      */
     public static String readEmail(String prompt) {
         String email;
@@ -202,11 +202,6 @@ public class InputValidator {
                 continue;
             }
 
-//            // length check
-//            if (input.length() > 200) {
-//                System.out.println("Message too long (max 200 characters).");
-//                continue;
-//            }
 
             return input;
         }

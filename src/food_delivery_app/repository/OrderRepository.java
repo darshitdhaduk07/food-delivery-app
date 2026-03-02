@@ -56,16 +56,6 @@ public class OrderRepository {
         return orders;
     }
 
-    public List<Order> findByDeliveryBoyId(int deliveryBoyId) {
-        List<Order> orders = new ArrayList<>();
-        for (Order o : orderHistory.values()) {
-            if (o.getDeliveryAgent() != null && o.getDeliveryAgent().getId() == deliveryBoyId) {
-                orders.add(o);
-            }
-        }
-        return orders;
-    }
-
     public List<Order> findAll() {
         return new ArrayList<>(orderHistory.values());
     }

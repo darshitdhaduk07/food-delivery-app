@@ -3,7 +3,7 @@ package food_delivery_app.model.menu;
 import java.util.*;
 
 public class MenuCategory extends MenuComponent{
-    LinkedHashMap<String, MenuComponent> components;
+    private final LinkedHashMap<String, MenuComponent> components;
     private boolean available = true;
     public MenuCategory(String name) {
         super(name);
@@ -29,7 +29,7 @@ public class MenuCategory extends MenuComponent{
         }
 
         components.put(key, component);
-        System.out.println("Category added");
+        System.out.println("Item added");
     }
 
     @Override

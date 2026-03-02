@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class AuthenticationService {
     private final CustomerRepository customerRepo = CustomerRepository.getInstance();
-    private Set<String> customerRepoPhoneNumber = customerRepo.getPhoneNumber();
+    private final Set<String> customerRepoPhoneNumber = customerRepo.getPhoneNumber();
     private final DeliveryRepository deliveryRepo = DeliveryRepository.getInstance();
 
     public void registerCustomer() {

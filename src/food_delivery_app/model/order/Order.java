@@ -14,12 +14,12 @@ public class Order {
     private static int counter = 0;
 
     private final int id;
-    private Customer customer;
-    private List<OrderItem> items;
+    private final Customer customer;
+    private final List<OrderItem> items;
     private double totalAmount;
     private double finalAmount;
     private IOrderStatus status;
-    private Address deliveryAddress;
+    private final Address deliveryAddress;
     private DeliveryAgent deliveryAgent;
     private static final NotificationService notificationService = new NotificationService();
     public Order(Customer customer, List<OrderItem> items, Address deliveryAddress) {
@@ -84,7 +84,6 @@ public class Order {
                 old +
                 " → " +
                 status);
-
     }
 
     public void assignDeliveryAgent(DeliveryAgent agent) {

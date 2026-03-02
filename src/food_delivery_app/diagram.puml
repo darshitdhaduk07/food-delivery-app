@@ -1,5 +1,6 @@
 @startuml
 skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
 
 ' =====================================================
 ' CONTROLLERS
@@ -252,8 +253,11 @@ class DeliveryAgent {
 }
 
 class Manager
-
 }
+
+' =====================================================
+' RELATIONSHIPS
+' =====================================================
 
 ' User hierarchy
 User <|-- Customer
